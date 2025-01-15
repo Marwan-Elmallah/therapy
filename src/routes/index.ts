@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import categoryRoutes from './category';
 import subCategoryRoutes from './subCategory';
+import userRoutes from './user';
+import materialRoutes from './material';
+import UploadsController from '../controller/handleUploads';
+import { uploadImagesMiddleware } from '../middleware/uploads';
 
 const router = Router();
 
@@ -15,7 +19,10 @@ router.get('/status', (req, res) => {
     });
 })
 
+router.post("/upload", uploadImagesMiddleware, UploadsController.uploadImages)
 router.use('/category', categoryRoutes);
 router.use('/subCategory', subCategoryRoutes);
+router.use('/user', userRoutes);
+router.use('/material', materialRoutes);
 
 export default router;

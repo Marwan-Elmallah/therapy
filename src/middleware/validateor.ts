@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
+import { APIError } from './errorHandler';
 
 const headers = ['body', 'params', 'query'];
 const Validate = (Schema: any) => {
@@ -8,7 +9,7 @@ const Validate = (Schema: any) => {
             if (Schema[key]) {
                 let validateShema = Schema[key].validate(req[key as keyof typeof req])
                 if (validateShema.error) {
-                    throw new Error(validateShema.error.details[0].message)
+                    throw new APIError(validateShema.error.details[0])
                 } else {
                     next()
                 }
@@ -39,4 +40,26 @@ const createSubCategoryValidator = Validate({
     })
 });
 
-export { createCategoryValidator, updateCategoryValidator, createSubCategoryValidator };
+const createUserValidator = Validate({
+    body: Joi.object().required().keys({
+        name: Joi.string().min(3).required(),
+        nationalId: Joi.string().min(4).max(14).optional(),
+        phone: Joi.string().required().min(10).max(14),
+        mobile: Joi.string().optional().min(10).max(14),
+        diagnostic: Joi.string().required(),
+        notes: Joi.string().optional(),
+    })
+});
+
+const createMaterialValidator = Validate({
+    body: Joi.object().required().keys({
+        name: Joi.string().min(3).required(),
+        description: Joi.string().optional(),
+        type: Joi.string().required().valid('video', 'document', 'image'),
+        link: Joi.string().uri().required(),
+        category: Joi.string().required(),
+        subCategory: Joi.string().required(),
+    })
+})
+
+export { createCategoryValidator, updateCategoryValidator, createSubCategoryValidator, createUserValidator, createMaterialValidator };

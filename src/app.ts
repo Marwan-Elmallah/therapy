@@ -13,6 +13,7 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/image", express.static("public/image"));
 
 app.use('/api', router);
 app.use(errorHandler);

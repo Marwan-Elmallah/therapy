@@ -1,26 +1,33 @@
+import { ObjectId } from "mongoose";
 interface ICategory extends Document {
     name: string;
     description?: string;
 }
 
-interface IMatrial extends Document {
+
+interface IMaterial extends Document {
     name: string;
-    description: string;
-    type: string;
+    description?: string;
+    type: "video" | "document" | "image";
     link: string;
-    category: string;
-    subCategory: string;
+    category: ObjectId;
+    subCategory: ObjectId;
 }
+
 
 interface ISubCategory extends Document {
     name: string;
     description: string;
-    category: string;
+    category: ObjectId;
 }
 
 interface IUser extends Document {
     name: string;
     nationalId: string;
+    phone: string;
+    mobile: string
+    diagnostic: string;
+    notes: string;
 }
 
-export { ICategory, IMatrial, ISubCategory, IUser };
+export { ICategory, IMaterial, ISubCategory, IUser };

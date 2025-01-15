@@ -4,113 +4,94 @@ import { APIError } from '../middleware/errorHandler';
 
 class CategoryController {
     // Get all categories
-    static async getAllCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const categories = await CategoryService.getAllCategories();
-            res.status(200).json({
-                error: false,
-                code: 200,
-                data: categories,
-                message: 'Categories fetched successfully'
-            });
-        } catch (error) {
-            next(error); // Pass the error to the global error handler
-        }
+    static async getAllCategories(req: Request, res: Response, next: NextFunction): Promise<Response> {
+        const categories = await CategoryService.getAllCategories();
+        return res.status(200).json({
+            error: false,
+            code: 200,
+            data: categories,
+            message: 'Categories fetched successfully'
+        });
     }
 
     // Get category by ID
-    static async getCategoryById(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const { id } = req.params;
-            const category = await CategoryService.getCategory(id);
-            if (!category) {
-                throw new APIError({
-                    message: `Category with ID ${id} not found`,
-                    status: 404,
-                });
-            }
-            res.status(200).json({
-                error: false,
-                code: 200,
-                data: category,
-                message: `Category of ID ${id} fetched successfully`,
+    static async getCategoryById(req: Request, res: Response, next: NextFunction): Promise<Response> {
+        const { id } = req.params;
+        const category = await CategoryService.getCategory(id);
+        if (!category) {
+            new APIError({
+                message: `Category with ID ${id} not found`,
+                status: 404,
             });
-        } catch (error) {
-            next(error); // Pass the error to the global error handler
         }
+        return res.status(200).json({
+            error: false,
+            code: 200,
+            data: category,
+            message: `Category of ID ${id} fetched successfully`,
+        });
     }
 
     // Create a new category
-    static async createCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const { name, description } = req.body;
-            const categoryExists = await CategoryService.getCategory(undefined, name);
-            if (categoryExists) {
-                throw new APIError({
-                    message: `Category with name ${name} already exists`,
-                    status: 400,
-                });
-            } else {
-                const newCategory = await CategoryService.addCategory(name, description);
-                res.status(201).json({
-                    error: false,
-                    code: 201,
-                    data: newCategory,
-                    message: 'Category created successfully',
-                });
-            }
-        } catch (error) {
-            next(error); // Pass the error to the global error handler
+    static async createCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+        const { name, description } = req.body;
+        const categoryExists = await CategoryService.getCategory(undefined, name);
+        if (categoryExists) {
+            return res.status(400).json({
+                error: true,
+                code: 400,
+                message: 'Category already exist',
+            })
+        } else {
+            const newCategory = await CategoryService.addCategory(name, description);
+            return res.status(201).json({
+                error: false,
+                code: 201,
+                data: newCategory,
+                message: 'Category created successfully',
+            });
         }
     }
 
 
     // Update an existing category
-    static async updateCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const categoryId = req.params.id;
-            const updatedCategoryData = req.body;
-            const updatedCategory = await CategoryService.updateCategory(categoryId, updatedCategoryData);
+    static async updateCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+        const categoryId = req.params.id;
+        const updatedCategoryData = req.body;
+        const updatedCategory = await CategoryService.updateCategory(categoryId, updatedCategoryData);
 
-            if (!updatedCategory) {
-                throw new APIError({
-                    message: `Category with ID ${categoryId} not found for update`,
-                    status: 404,
-                });
-            }
-
-            res.status(200).json({
-                error: false,
-                code: 200,
-                data: updatedCategory,
-                message: `Category ${categoryId} updated successfully`,
+        if (!updatedCategory) {
+            new APIError({
+                message: `Error to update Category with ID ${categoryId}`,
+                status: 404,
             });
-        } catch (error) {
-            next(error); // Pass the error to the global error handler
         }
+
+        return res.status(200).json({
+            error: false,
+            code: 200,
+            data: updatedCategory,
+            message: `Category ${categoryId} updated successfully`,
+        });
     }
 
     // Delete a category
-    static async deleteCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const categoryId = req.params.id;
-            const deletedCategory = await CategoryService.deleteCategory(categoryId);
+    static async deleteCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+        const categoryId = req.params.id;
+        const deletedCategory = await CategoryService.deleteCategory(categoryId);
 
-            if (!deletedCategory) {
-                throw new APIError({
-                    message: `Category with ID ${categoryId} not found for deletion`,
-                    status: 404,
-                });
-            }
-
-            res.status(200).json({
-                error: false,
-                code: 200,
-                message: `Category ${categoryId} deleted successfully`,
+        if (!deletedCategory) {
+            new APIError({
+                message: `Category with ID ${categoryId} not found for deletion`,
+                status: 404,
             });
-        } catch (error) {
-            next(error); // Pass the error to the global error handler
         }
+
+        return res.status(200).json({
+            error: false,
+            code: 200,
+            message: `Category ${categoryId} deleted successfully`,
+        });
     }
 }
 
