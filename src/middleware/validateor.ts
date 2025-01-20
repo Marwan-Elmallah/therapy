@@ -62,4 +62,11 @@ const createMaterialValidator = Validate({
     })
 })
 
-export { createCategoryValidator, updateCategoryValidator, createSubCategoryValidator, createUserValidator, createMaterialValidator };
+const createInvitationValidator = Validate({
+    body: Joi.object().required().keys({
+        user: Joi.string().required(),
+        material: Joi.array().required()
+    })
+})
+
+export { createCategoryValidator, updateCategoryValidator, createSubCategoryValidator, createUserValidator, createMaterialValidator, createInvitationValidator };

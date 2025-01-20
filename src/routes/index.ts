@@ -3,6 +3,7 @@ import categoryRoutes from './category';
 import subCategoryRoutes from './subCategory';
 import userRoutes from './user';
 import materialRoutes from './material';
+import invitationRoutes from './invitation';
 import UploadsController from '../controller/handleUploads';
 import { uploadImagesMiddleware } from '../middleware/uploads';
 
@@ -24,5 +25,6 @@ router.use('/category', categoryRoutes);
 router.use('/subCategory', subCategoryRoutes);
 router.use('/user', userRoutes);
 router.use('/material', materialRoutes);
+router.use("/invitation", invitationRoutes);
 
 export default router;

@@ -30,4 +30,9 @@ interface IUser extends Document {
     notes: string;
 }
 
-export { ICategory, IMaterial, ISubCategory, IUser };
+interface IInvitation extends Document {
+    user: ObjectId;
+    material: ObjectId[];
+}
+
+export { ICategory, IMaterial, ISubCategory, IUser, IInvitation };
