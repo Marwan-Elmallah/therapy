@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import MaterialService from "../service/matrial";
+import MaterialService from "../service/Matrial";
 import { APIError } from '../middleware/errorHandler';
 
 class MaterialController {
@@ -52,6 +52,9 @@ class MaterialController {
     static async updateMaterial(req: Request, res: Response, next: NextFunction): Promise<Response> {
         const { id } = req.params;
         const { name, description } = req.body;
+        console.log(req.body);
+
+
         const material = await MaterialService.updateMaterial(id, name, description);
         if (!material) {
             new APIError({

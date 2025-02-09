@@ -25,8 +25,8 @@ class MaterialService {
     }
 
     // Method to update Material.
-    static async updateMaterial(id: string, name: string, category: string, notes?: string): Promise<IMaterial | null> {
-        return await Material.findByIdAndUpdate(id, { name, category, notes }, { new: true });
+    static async updateMaterial(id: string, name: string, description: string,): Promise<IMaterial | null> {
+        return await Material.findByIdAndUpdate(id, { name, description }, { new: true });
     }
 
     // Method to delete Material.

@@ -21,7 +21,7 @@ class UploadsController {
             code: 200,
             message: "Image uploaded successfully",
             data: {
-                image: `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+                fileUrl: `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
             }
         });
     }
@@ -35,14 +35,14 @@ class UploadsController {
                 message: "Please upload images"
             });
         }
-        const images: string[] = (req.files as Express.Multer.File[]).map((file: Express.Multer.File) => {
+        const fileUrl: string[] = (req.files as Express.Multer.File[]).map((file: Express.Multer.File) => {
             return `${req.protocol}://${req.get('host')}/image/${file.filename}`;
         });
         return res.status(200).json({
             error: false,
             code: 200,
             message: "Images uploaded successfully",
-            data: images
+            data: fileUrl
         });
     }
 }

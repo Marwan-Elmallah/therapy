@@ -4,9 +4,9 @@ import { IUser } from '../types';
 
 
 const userSchema = new Schema<IUser>({
-    name: { type: String, required: true, unique: true },
-    nationalId: { type: String, required: false, unique: true, default: "no national id yet" },
-    notes: { type: String, required: false, default: 'No Notes Yet' },
+    name: { type: String, required: true },
+    nationalId: { type: String, required: false, default: 'Empty!' },
+    notes: { type: String, required: false, default: 'Empty!' },
     phone: { type: String, required: true, unique: true },
     mobile: { type: String, required: false, default: "no mobile yet" },
     diagnostic: { type: String, required: true }

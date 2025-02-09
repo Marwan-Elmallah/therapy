@@ -43,7 +43,7 @@ const createSubCategoryValidator = Validate({
 const createUserValidator = Validate({
     body: Joi.object().required().keys({
         name: Joi.string().min(3).required(),
-        nationalId: Joi.string().min(4).max(14).optional(),
+        nationalId: Joi.string().optional(),
         phone: Joi.string().required().min(10).max(14),
         mobile: Joi.string().optional().min(10).max(14),
         diagnostic: Joi.string().required(),
@@ -55,7 +55,7 @@ const createMaterialValidator = Validate({
     body: Joi.object().required().keys({
         name: Joi.string().min(3).required(),
         description: Joi.string().optional(),
-        type: Joi.string().required().valid('video', 'document', 'image'),
+        type: Joi.string().required().valid('file', 'link'),
         link: Joi.string().uri().required(),
         category: Joi.string().required(),
         subCategory: Joi.string().required(),

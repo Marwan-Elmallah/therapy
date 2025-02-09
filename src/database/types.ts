@@ -8,7 +8,7 @@ interface ICategory extends Document {
 interface IMaterial extends Document {
     name: string;
     description?: string;
-    type: "video" | "document" | "image";
+    type: "file" | "link";
     link: string;
     category: ObjectId;
     subCategory: ObjectId;

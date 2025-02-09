@@ -57,6 +57,23 @@ class UserController {
             message: 'User updated successfully',
         });
     }
+
+    static async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
+        const userId = req.params.id;
+        const deletedUser = await UserService.deleteUser(userId);
+        if (!deletedUser) {
+            new APIError({
+                message: `Error to delete User with ID ${userId}`,
+                status: 404,
+            });
+        }
+        return res.status(200).json({
+            error: false,
+            code: 200,
+            data: deletedUser,
+            message: 'User deleted successfully',
+        });
+    }
 }
 
 export default UserController;

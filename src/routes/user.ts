@@ -16,6 +16,9 @@ router.post('/', createUserValidator, UserController.create);
 // Update an existing User
 router.put('/:id', UserController.updateUser);
 
+// Delete a User
+router.delete('/:id', UserController.deleteUser);
+
 
 
 export default router;

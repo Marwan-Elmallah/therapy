@@ -4,8 +4,9 @@ import subCategoryRoutes from './subCategory';
 import userRoutes from './user';
 import materialRoutes from './material';
 import invitationRoutes from './invitation';
+import adminRoutes from './admin';
 import UploadsController from '../controller/handleUploads';
-import { uploadImagesMiddleware } from '../middleware/uploads';
+import { uploadImageMiddleware } from '../middleware/uploads';
 
 const router = Router();
 
@@ -20,11 +21,12 @@ router.get('/status', (req, res) => {
     });
 })
 
-router.post("/upload", uploadImagesMiddleware, UploadsController.uploadImages)
+router.post("/upload", uploadImageMiddleware, UploadsController.uploadImage)
 router.use('/category', categoryRoutes);
 router.use('/subCategory', subCategoryRoutes);
 router.use('/user', userRoutes);
 router.use('/material', materialRoutes);
 router.use("/invitation", invitationRoutes);
+router.use("/admin", adminRoutes);
 
 export default router;
