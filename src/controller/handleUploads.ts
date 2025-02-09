@@ -1,35 +1,35 @@
 import { Request, Response } from 'express';
 
 class UploadsController {
-    static async uploadImage(req: Request, res: Response): Promise<Response> {
+    static async uploadImage(req: Request, res: Response) {
         if (!req.file) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: true,
                 code: 400,
                 message: "Please upload an image"
             });
         }
         if (req.files) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: true,
                 code: 400,
                 message: "Please upload only one image"
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             message: "Image uploaded successfully",
             data: {
-                fileUrl: `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+                fileUrl: req.file ? `${req.protocol}://${req.get('host')}/image/${req.file.filename}` : ''
             }
         });
     }
 
-    static async uploadImages(req: Request, res: Response): Promise<Response> {
+    static async uploadImages(req: Request, res: Response) {
 
         if (!req.files) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: true,
                 code: 400,
                 message: "Please upload images"
@@ -38,7 +38,7 @@ class UploadsController {
         const fileUrl: string[] = (req.files as Express.Multer.File[]).map((file: Express.Multer.File) => {
             return `${req.protocol}://${req.get('host')}/image/${file.filename}`;
         });
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             message: "Images uploaded successfully",

@@ -2,12 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import InvitationService from '../service/Invitation';
 import { APIError } from '../middleware/errorHandler';
 class InvitationController {
-    static async getAllInvitations(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getAllInvitations(req: Request, res: Response, next: NextFunction) {
         const invitations = await InvitationService.getInvitations();
-        return res.status(200).json({ error: false, code: 200, data: invitations, message: 'Invitations fetched successfully' });
+        res.status(200).json({ error: false, code: 200, data: invitations, message: 'Invitations fetched successfully' });
     }
 
-    static async getInvitation(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getInvitation(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const invitation = await InvitationService.getInvitation(id);
         if (!invitation) {
@@ -16,16 +16,16 @@ class InvitationController {
                 status: 404,
             });
         }
-        return res.status(200).json({ error: false, code: 200, data: invitation, message: `Invitation of ID ${id} fetched successfully` });
+        res.status(200).json({ error: false, code: 200, data: invitation, message: `Invitation of ID ${id} fetched successfully` });
     }
 
-    static async addInvitation(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async addInvitation(req: Request, res: Response, next: NextFunction) {
         const { user, material } = req.body;
         const invitation = await InvitationService.addInvitation(user, material);
-        return res.status(200).json({ error: false, code: 200, data: invitation, message: 'Invitation added successfully' });
+        res.status(200).json({ error: false, code: 200, data: invitation, message: 'Invitation added successfully' });
     }
 
-    static async updateInvitation(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async updateInvitation(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const { user, material } = req.body;
         const invitation = await InvitationService.updateInvitation(id, user, material);
@@ -35,10 +35,10 @@ class InvitationController {
                 status: 404,
             });
         }
-        return res.status(200).json({ error: false, code: 200, data: invitation, message: `Invitation of ID ${id} updated successfully` });
+        res.status(200).json({ error: false, code: 200, data: invitation, message: `Invitation of ID ${id} updated successfully` });
     }
 
-    static async deleteInvitation(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async deleteInvitation(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const invitation = await InvitationService.deleteInvitation(id);
         if (!invitation) {
@@ -47,7 +47,7 @@ class InvitationController {
                 status: 404,
             });
         }
-        return res.status(200).json({ error: false, code: 200, data: invitation, message: `Invitation of ID ${id} deleted successfully` });
+        res.status(200).json({ error: false, code: 200, data: invitation, message: `Invitation of ID ${id} deleted successfully` });
     }
 }
 

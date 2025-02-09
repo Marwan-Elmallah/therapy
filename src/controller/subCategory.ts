@@ -4,9 +4,9 @@ import { APIError } from '../middleware/errorHandler';
 
 class SubCategoryController {
     // Get all subCategories
-    static async getAllSubCategories(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getAllSubCategories(req: Request, res: Response, next: NextFunction) {
         const subCategories = await SubCategoryService.getAllSubCategories();
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: subCategories,
@@ -15,7 +15,7 @@ class SubCategoryController {
     }
 
     // Get SubCategory by ID
-    static async getSubCategoryById(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getSubCategoryById(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const SubCategory = await SubCategoryService.getSubCategory(id);
         if (!SubCategory) {
@@ -24,7 +24,7 @@ class SubCategoryController {
                 status: 404,
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: SubCategory,
@@ -33,18 +33,18 @@ class SubCategoryController {
     }
 
     // Create a new SubCategory
-    static async createSubCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async createSubCategory(req: Request, res: Response, next: NextFunction) {
         const { name, description, category } = req.body;
         const SubCategoryExists = await SubCategoryService.getSubCategory(undefined, name);
         if (SubCategoryExists) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: true,
                 code: 400,
                 message: 'sub category already exist',
             })
         } else {
             const newSubCategory = await SubCategoryService.addSubCategory(name, description, category);
-            return res.status(201).json({
+            res.status(201).json({
                 error: false,
                 code: 201,
                 data: newSubCategory,
@@ -54,7 +54,7 @@ class SubCategoryController {
     }
 
     // Update an existing SubCategory
-    static async updateSubCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async updateSubCategory(req: Request, res: Response, next: NextFunction) {
         const SubCategoryId = req.params.id;
         const updatedSubCategoryData = req.body;
         const updatedSubCategory = await SubCategoryService.updateSubCategory(SubCategoryId, updatedSubCategoryData);
@@ -65,7 +65,7 @@ class SubCategoryController {
             });
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: updatedSubCategory,
@@ -74,7 +74,7 @@ class SubCategoryController {
     }
 
     // Delete a SubCategory
-    static async deleteSubCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async deleteSubCategory(req: Request, res: Response, next: NextFunction) {
         const SubCategoryId = req.params.id;
         const deletedSubCategory = await SubCategoryService.deleteSubCategory(SubCategoryId);
 
@@ -85,7 +85,7 @@ class SubCategoryController {
             });
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             message: `SubCategory ${SubCategoryId} deleted successfully`,

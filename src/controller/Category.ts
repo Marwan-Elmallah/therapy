@@ -4,9 +4,9 @@ import { APIError } from '../middleware/errorHandler';
 
 class CategoryController {
     // Get all categories
-    static async getAllCategories(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getAllCategories(req: Request, res: Response, next: NextFunction) {
         const categories = await CategoryService.getAllCategories();
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: categories,
@@ -15,7 +15,7 @@ class CategoryController {
     }
 
     // Get category by ID
-    static async getCategoryById(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getCategoryById(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const category = await CategoryService.getCategory(id);
         if (!category) {
@@ -24,7 +24,7 @@ class CategoryController {
                 status: 404,
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: category,
@@ -33,18 +33,18 @@ class CategoryController {
     }
 
     // Create a new category
-    static async createCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async createCategory(req: Request, res: Response, next: NextFunction) {
         const { name, description } = req.body;
         const categoryExists = await CategoryService.getCategory(undefined, name);
         if (categoryExists) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: true,
                 code: 400,
                 message: 'Category already exist',
             })
         } else {
             const newCategory = await CategoryService.addCategory(name, description);
-            return res.status(201).json({
+            res.status(201).json({
                 error: false,
                 code: 201,
                 data: newCategory,
@@ -55,7 +55,7 @@ class CategoryController {
 
 
     // Update an existing category
-    static async updateCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async updateCategory(req: Request, res: Response, next: NextFunction) {
         const categoryId = req.params.id;
         const updatedCategoryData = req.body;
         const updatedCategory = await CategoryService.updateCategory(categoryId, updatedCategoryData);
@@ -67,7 +67,7 @@ class CategoryController {
             });
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: updatedCategory,
@@ -76,7 +76,7 @@ class CategoryController {
     }
 
     // Delete a category
-    static async deleteCategory(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async deleteCategory(req: Request, res: Response, next: NextFunction) {
         const categoryId = req.params.id;
         const deletedCategory = await CategoryService.deleteCategory(categoryId);
 
@@ -87,7 +87,7 @@ class CategoryController {
             });
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             message: `Category ${categoryId} deleted successfully`,

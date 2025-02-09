@@ -3,9 +3,9 @@ import MaterialService from "../service/Matrial";
 import { APIError } from '../middleware/errorHandler';
 
 class MaterialController {
-    static async getAllMaterials(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getAllMaterials(req: Request, res: Response, next: NextFunction) {
         const materials = await MaterialService.getMaterials();
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: materials,
@@ -13,7 +13,7 @@ class MaterialController {
         });
     }
 
-    static async getMaterialById(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async getMaterialById(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const material = await MaterialService.getMaterial(id);
         if (!material) {
@@ -22,7 +22,7 @@ class MaterialController {
                 status: 404,
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: material,
@@ -30,18 +30,18 @@ class MaterialController {
         });
     }
 
-    static async create(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async create(req: Request, res: Response, next: NextFunction) {
         const { name, subCategory, category, link, type, description } = req.body;
         const existingMaterial = await MaterialService.getMaterial(undefined, name);
         if (existingMaterial) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: true,
                 code: 400,
                 message: `Material with name '${name}' already exists`,
             })
         }
         const material = await MaterialService.addMaterial(name, subCategory, category, link, type, description);
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: material,
@@ -49,7 +49,7 @@ class MaterialController {
         });
     }
 
-    static async updateMaterial(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async updateMaterial(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const { name, description } = req.body;
         console.log(req.body);
@@ -62,7 +62,7 @@ class MaterialController {
                 status: 404,
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             data: material,
@@ -70,7 +70,7 @@ class MaterialController {
         });
     }
 
-    static async deleteMaterial(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    static async deleteMaterial(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         const material = await MaterialService.deleteMaterial(id);
         if (!material) {
@@ -79,7 +79,7 @@ class MaterialController {
                 status: 404,
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             error: false,
             code: 200,
             message: `Material of ID ${id} deleted successfully`,
